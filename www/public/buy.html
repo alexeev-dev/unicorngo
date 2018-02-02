@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>UnicornGO</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+        <!-- Favicon -->
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+        <!-- Load Open Sans font from Google Web Fonts -->
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,800,700,600,300' rel='stylesheet' type='text/css'>
+
+        <!-- Font Awesome -->
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+
+        <!-- Stylesheet assets -->
+        <link href="css/reset.css" rel="stylesheet">
+        <!-- /Stylesheet assets -->
+
+        <!-- Template stylesheet -->
+        <link href="css/style.css?v=9" rel="stylesheet">
+        <!-- /Template stylesheet -->
+
+        <!-- Color scheme stylesheet -->
+        <link href="css/colors-colorful-2.css" rel="stylesheet">
+        <!-- /Color scheme stylesheet -->
+
+        <script src="js/web3.js"></script>
+        <script src="js/bignumber.js"></script>
+        <script>
+          var ABI =  [{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"}],"name":"approve","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transferFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"crowdsaleContract","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_value","type":"uint256"}],"name":"burn","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"contractAddress","type":"address"}],"name":"setCrowdsaleContract","outputs":[],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_from","type":"address"},{"name":"_value","type":"uint256"}],"name":"burnFrom","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"owner","outputs":[{"name":"","type":"address"}],"payable":false,"type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_to","type":"address"},{"name":"_value","type":"uint256"}],"name":"transfer","outputs":[],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"_spender","type":"address"},{"name":"_value","type":"uint256"},{"name":"_extraData","type":"bytes"}],"name":"approveAndCall","outputs":[{"name":"success","type":"bool"}],"payable":false,"type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"payable":false,"type":"function"},{"constant":false,"inputs":[{"name":"newOwner","type":"address"}],"name":"transferOwnership","outputs":[],"payable":false,"type":"function"},{"inputs":[],"payable":false,"type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":false,"name":"value","type":"uint256"}],"name":"Burn","type":"event"}];
+        </script>
+    </head>
+
+    <body>
+        <!-- Content -->
+        <div class="content">
+
+            <h1><a href="index.html"><img src="img/logo_white.png?v=7" alt="UnicornGO"></a></h1>
+            <h2>1 CANDY = 0,0001 ETH &mdash; ONLY 1,000,000 CANDYCOINS</h2>
+
+            <p>To buy CANDYCOIN, we recommend using a wallet opened at <a href="https://www.myetherwallet.com/" target="_blank" style="color: #fff;">myetherwallet.com</a>, or similar wallet which supports Ethereum Tokens. You can send your money directly to contract "0x34d1857175EB5693bBee49c214E2cd44b2F3058c" or use the following QR-code:</p>
+
+            <p></p>
+            <br><br>
+            <img src="img/code.gif" alt="">
+
+            <br><br><br><br>
+            <p>To check your tokens, please use the following form.</p>
+            <form class="subscribe-form" id="my-form" style="margin-top: 20px;">
+                <input type="text" placeholder="Ether wallet with Candy" class="subscribe-email" id="address">
+                <input type="submit" value="check" class="subscribe-submit">
+            </form>
+            <br>
+            <div id="my-balance"></div>
+
+            <br><br><br><br>
+            <h2>Do you have PROMO code?</h2>
+            <form class="subscribe-form promo" id="promo-form">
+                <input type="text" placeholder="PROMO code" id="subscribe-code" class="subscribe-email">
+                <input type="text" placeholder="Your email" id="subscribe-email" class="subscribe-email">
+                <input type="text" placeholder="Ether wallet with Candy" id="subscribe-wallet" class="subscribe-email">
+                <input type="submit" value="Get a bonus" id="subscribe-submit" class="subscribe-submit">
+            </form>
+
+        </div>
+        <!-- /Content -->
+
+        <ul class="lang">
+            <li><a href="https://unicorngo.io/ru/buy.html">Рус</a></li>
+            <li class="active"><a href="https://unicorngo.io/buy.html">EN</a></li>
+        </ul>
+
+        <script>
+            var Web3 = require('web3');
+            var web3 = new Web3();
+
+            web3.setProvider(new Web3.providers.HttpProvider('https://api.myetherapi.com/eth'));
+
+            var contrAddress = '0xcD3673aF09e76C74d889aaBab68cA0645566A3a1';
+            var contract = web3.eth.contract(ABI).at(contrAddress);
+
+            document.getElementById('my-form')
+              .addEventListener('submit', function handleSubmit(event) {
+                event.preventDefault();
+                var userAddress = document.getElementById('address').value;
+                var balance = contract.balanceOf(userAddress, function (error, result) {
+                    console.log(error);
+                    console.log(result);
+
+                    var mybalance = result.dividedBy(new Number("1e+18")).toFixed(2).toString();
+                    document.getElementById("my-balance").innerText = 'баланс: ' + mybalance + ' CANDY';
+                })
+              })
+
+
+            function round_mod(value, precision) {
+                var precision_number = Math.pow(10, precision);
+                return Math.round(value * precision_number) / precision_number;
+            }
+
+        </script>
+
+        <!-- Scripts -->
+        <script src="js/modernizr.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script src="js/jquery.countdown.js"></script>
+        <script src="js/jquery.placeholder.js"></script>
+        <script src="js/config.js?v=8"></script>
+        <script src="js/js.js?v=8"></script>
+        <!-- /Scripts -->
+    </body>
+</html>
